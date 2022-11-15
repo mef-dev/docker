@@ -72,8 +72,6 @@ check_curl
 check_docker
 check_compose
 
-git clone https://github.com/mef-dev/docker.git
-cd docker
 docker-compose up -d
 sleep 30
 docker cp "db-init.sql" mssql-deployment:/
