@@ -1,0 +1,99 @@
+version: '3.8'
+services:
+  apps:
+    image: digitalbss/app:latest
+    container_name: apps
+    restart: always
+    volumes:
+      - /data/apps-storage:/storage:z
+    networks:
+      - digitalbss
+    dns_search: .
+    ports:
+      - 81:80
+
+
+  ucpapi:
+    image: digitalbss/ucpapi:latest
+    container_name: ucpapi
+    restart: always
+    volumes:
+      - /data/apps-storage:/storage/ProdK8S:z
+    networks:
+      - digitalbss
+    dns_search: .
+    ports:
+      - 82:5000
+    environment:
+      ASPNETCORE_SETTINGS: "ProdK8S"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://*:5000"
+    depends_on:
+      - mssql-deployment
+
+
+  autodoc:
+    image: digitalbss/autodoc:latest
+    container_name: autodoc
+    restart: always
+    entrypoint: ["/bin/bash", "-c", "php-fpm8 && chmod 777 /var/run/php/php8-fpm.sock && chmod 755 /usr/share/nginx/html/* && nginx -g 'daemon off;'"]
+    command: bash -c "cd /usr/share/nginx/html && cp -r -t packages/ fonts styles favicon.ico logo.svg toc.html"
+    volumes:
+       - /data/mefdev-storage:/usr/share/nginx/html/packages:z
+    networks:
+      - digitalbss
+    dns_search: .
+    ports:
+      - 83:80
+    
+
+  servicehost:
+    image: digitalbss/servicehost:latest
+    container_name: servicehost
+    restart: always
+    volumes:
+      - /data/mefdev-storage:/mefdev_storage/packages:z
+    networks:
+      - digitalbss
+    dns_search: .
+    ports:
+      - 84:7000
+    environment:
+      ASPNETCORE_SETTINGS: "ProdK8S"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://*:7000"
+    depends_on:
+      - mssql-deployment
+
+
+  mssql-deployment:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql-deployment
+    restart: always
+    user: root
+    volumes:
+      - /data/mssql:/var/opt/mssql
+    networks:
+      digitalbss:
+    dns_search: .
+    ports:
+      - 1433:1433
+    environment:
+      MSSQL_PID: "Developer"
+      ACCEPT_EULA: "Y"
+      MSSQL_AGENT_ENABLED: "true"
+      MSSQL_SA_PASSWORD: "MyC0m9l&xP@ssw0rd"
+        
+  plantuml:
+    image: plantuml/plantuml-server
+    container_name: plantuml
+    restart: always
+    networks:
+      - digitalbss
+    dns_search: .
+    ports:
+      - 85:8080
+
+networks:
+  digitalbss:
+    external: false
