@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   apps:
-    image: digitalbss/app:latest
+    image: digitalbss/apps:latest
     container_name: apps
     restart: always
     volumes:
