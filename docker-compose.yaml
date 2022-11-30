@@ -13,9 +13,9 @@ services:
       - 81:80
 
 
-  ucpapi:
-    image: digitalbss/ucpapi:latest
-    container_name: ucpapi
+  api:
+    image: digitalbss/api:latest
+    container_name: api
     restart: always
     volumes:
       - /data/apps-storage:/storage/ProdK8S:z
@@ -29,7 +29,7 @@ services:
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "http://*:5000"
     depends_on:
-      - mssql-deployment
+      - mssql
 
 
   autodoc:
@@ -45,7 +45,7 @@ services:
     dns_search: .
     ports:
       - 83:80
-    
+
 
   servicehost:
     image: digitalbss/servicehost:latest
@@ -63,12 +63,12 @@ services:
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "http://*:7000"
     depends_on:
-      - mssql-deployment
+      - mssql
 
 
-  mssql-deployment:
+  mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: mssql-deployment
+    container_name: mssql
     restart: always
     user: root
     volumes:
@@ -83,7 +83,8 @@ services:
       ACCEPT_EULA: "Y"
       MSSQL_AGENT_ENABLED: "true"
       MSSQL_SA_PASSWORD: "MyC0m9l&xP@ssw0rd"
-        
+
+
   plantuml:
     image: plantuml/plantuml-server
     container_name: plantuml
