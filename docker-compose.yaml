@@ -5,7 +5,9 @@ services:
     container_name: apps
     restart: always
     volumes:
-      - /data/apps-storage:/storage:z
+      - type: volume
+        source: apps-storage
+        target: /storage
     networks:
       - digitalbss
     dns_search: .
@@ -18,7 +20,9 @@ services:
     container_name: api
     restart: always
     volumes:
-      - /data/apps-storage:/storage/ProdK8S:z
+     - type: volume
+       source: apps-storage
+       target: /storage/ProdK8S
     networks:
       - digitalbss
     dns_search: .
@@ -39,7 +43,9 @@ services:
     entrypoint: ["/bin/bash", "-c", "php-fpm8 && chmod 777 /var/run/php/php8-fpm.sock && chmod 755 /usr/share/nginx/html/* && nginx -g 'daemon off;'"]
     command: bash -c "cd /usr/share/nginx/html && cp -r -t packages/ fonts styles favicon.ico logo.svg toc.html"
     volumes:
-       - /data/mefdev-storage:/usr/share/nginx/html/packages:z
+     - type: volume
+       source: mefdev-storage
+       target: /usr/share/nginx/html/packages
     networks:
       - digitalbss
     dns_search: .
@@ -52,7 +58,9 @@ services:
     container_name: servicehost
     restart: always
     volumes:
-      - /data/mefdev-storage:/mefdev_storage/packages:z
+     - type: volume
+       source: mefdev-storage
+       target: /mefdev_storage/packages
     networks:
       - digitalbss
     dns_search: .
@@ -72,7 +80,9 @@ services:
     restart: always
     user: root
     volumes:
-      - /data/mssql:/var/opt/mssql
+      - type: volume
+        source: mssql
+        target: /var/opt/mssql
     networks:
       digitalbss:
     dns_search: .
@@ -98,3 +108,8 @@ services:
 networks:
   digitalbss:
     external: false
+volumes:
+  apps-storage:
+  mefdev-storage:
+  mssql:
+
