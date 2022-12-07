@@ -73,9 +73,6 @@ check_docker
 check_compose
 
 docker-compose up -d
-sleep 30
-docker cp "db-init.sql" mssql:/
-docker exec -it mssql /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "MyC0m9l&xP@ssw0rd" -d master -i db-init.sql
 docker-compose ps
 
 exit 0;
