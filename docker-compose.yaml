@@ -4,6 +4,7 @@ services:
     image: digitalbss/apps:latest
     container_name: apps
     restart: always
+    entrypoint: ["sh", "-c", "chmod -R 777 /storage && nginx -g 'daemon off;'"]
     volumes:
       - type: volume
         source: apps-storage
@@ -92,7 +93,7 @@ services:
       MSSQL_PID: "Developer"
       ACCEPT_EULA: "Y"
       MSSQL_AGENT_ENABLED: "true"
-      MSSQL_SA_PASSWORD: "MyC0m9l&xP@ssw0rd"
+      MSSQL_SA_PASSWORD: "my!Se3u8ePassw0rd"
 
 
   plantuml:
