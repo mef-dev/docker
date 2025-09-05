@@ -18,7 +18,7 @@ services:
 
   api:
     image: digitalbss/api:latest
-    container_name: api
+    container_name: ucpapi
     restart: always
     volumes:
      - type: volume
@@ -28,11 +28,10 @@ services:
       - digitalbss
     dns_search: .
     ports:
-      - 82:5000
+      - 82:80
     environment:
-      ASPNETCORE_SETTINGS: "ProdK8S"
       ASPNETCORE_ENVIRONMENT: "Development"
-      ASPNETCORE_URLS: "http://*:5000"
+      ASPNETCORE_URLS: "http://*:80"
     depends_on:
       - mssql
 
