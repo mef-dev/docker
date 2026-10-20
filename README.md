@@ -23,7 +23,7 @@ The APP is web frontend (GUI) element of serverless MEF.DEV openAPI platform.
 2) http://localhost:82
 The API is a backend stateless element of serverless MEF.DEV openAPI platform.
 3) http://localhost:83
-The AUTODOC is a backend statefull element of serverless MEF.DEV openAPI platform.
+The KNOWLEDGE GRAPH (digitalbss/knowledge-graph, formerly digitalbss/autodoc) is a backend stateful element of serverless MEF.DEV openAPI platform: documentation, packages and the knowledge graph.
 4) http://localhost:84
 The SERVICEHOST is a backend statefull element of serverless MEF.DEV openAPI platform.
 5) http://localhost:85
